@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./Signin.module.css";
+import styles from "./Signup.module.css";
 
-const Signin = (props) => {
+const Signup = (props) => {
   return (
     <div className={styles.signin}>
       <input type="text" />
@@ -11,4 +11,4 @@ const Signin = (props) => {
   );
 };
 
-export default Signin;
+export default Signup;

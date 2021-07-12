@@ -1,13 +1,13 @@
 import { BrowserRouter, Route } from "react-router-dom";
 import Login from "./components/Login";
-import Signin from "./components/Signin";
+import Signup from "./components/Signup";
 import Todo from "./components/Todo";
 
 function App() {
   return (
     <BrowserRouter>
       <Route exact path="/" component={Login} />
-      <Route path="/signin" component={Signin} />
+      <Route path="/signup" component={Signup} />
       <Route path="/todo" component={Todo} />
     </BrowserRouter>
   );
