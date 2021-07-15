@@ -9,6 +9,7 @@ const TodoItem = ({ todo, deleteTodo, toggledTodo, handleEditTodo }) => {
   const inputRef = useRef();
 
   const onEditTodo = () => {
+    if (inputRef.current.value === "") return;
     handleEditTodo(todo.id, inputRef.current.value);
   };
   const handleKeyPress = (e) => {
@@ -106,6 +107,7 @@ const Todo = (props) => {
   const history = useHistory();
 
   const createTodo = (content) => {
+    if (content === "") return;
     setTodoList(
       todoList.concat({ id: Date.now(), content: content, done: false })
     );
