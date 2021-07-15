@@ -34,6 +34,14 @@
   height: 1.3rem;
 }
 
+.signupButton {
+  width: 17rem;
+  text-align: right;
+  color: blue;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
 .button {
   width: 16.5rem;
   height: 1.7rem;

@@ -17,6 +17,11 @@
   box-shadow: 5px 5px 15px 2px rgba(0, 0, 0, 0.35);
 }
 
+.logoutButton {
+  width: 6rem;
+  margin-bottom: 1rem;
+}
+
 .todoList {
   flex: 1;
   overflow: auto;
@@ -35,6 +40,7 @@
   display: flex;
   align-items: center;
   overflow: auto;
+  margin-bottom: 1rem;
 }
 
 .todoCheckbox {
@@ -49,7 +55,7 @@
 
 .description {
   flex: 1;
-  padding: 0.1rem 1rem 0 1rem;
+  margin: 0.1rem 1rem 0 1rem;
   cursor: pointer;
 }
 
@@ -58,6 +64,11 @@
   text-decoration: line-through;
 }
 
-.delete {
+.editButton {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.deleteButton {
   cursor: pointer;
 }

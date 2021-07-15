@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import styles from "./Login.module.css";
 
 const Login = (props) => {
@@ -18,6 +19,9 @@ const Login = (props) => {
           <p>PASSWORD</p>
           <input className={styles.input} type="text" />
         </div>
+        <Link to="/signup" className={styles.signupButton}>
+          회원가입
+        </Link>
         <button className={styles.button} onClick={onClick}>
           로그인
         </button>
