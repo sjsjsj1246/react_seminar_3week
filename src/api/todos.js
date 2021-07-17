@@ -45,3 +45,11 @@ export const editTodo = async ({ id, content }) => {
   });
   return response;
 };
+
+export const toggleTodo = async (id) => {
+  const response = await axios({
+    method: "patch",
+    url: `/api/todos/complete/${id}`,
+  });
+  return response;
+};

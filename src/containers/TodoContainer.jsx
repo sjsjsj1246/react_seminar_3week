@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { createTodo, deleteTodo, editTodo, getTodoList } from "../api/todos";
+import {
+  createTodo,
+  deleteTodo,
+  editTodo,
+  getTodoList,
+  toggleTodo,
+} from "../api/todos";
 import { logout } from "../api/auth";
 import TodoList from "../components/TodoList";
 import { useHistory } from "react-router";
@@ -33,6 +39,13 @@ const TodoContainer = (props) => {
     });
   };
 
+  const onToggleTodo = (id) => {
+    toggleTodo(id).then((response) => {
+      console.log(response);
+      onGetTodoList();
+    });
+  };
+
   const onLogout = () => {
     logout().then((data) => console.log(data));
     history.push("/");
@@ -51,6 +64,7 @@ const TodoContainer = (props) => {
       onCreateTodo={onCreateTodo}
       onDeleteTodo={onDeleteTodo}
       onEditTodo={onEditTodo}
+      onToggleTodo={onToggleTodo}
       onLogout={onLogout}
     />
   );

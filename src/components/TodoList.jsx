@@ -9,6 +9,7 @@ const TodoList = ({
   onCreateTodo,
   onDeleteTodo,
   onEditTodo,
+  onToggleTodo,
   onLogout,
 }) => {
   const inputRef = useRef();
@@ -17,24 +18,6 @@ const TodoList = ({
     if (content === "") return;
     onCreateTodo(content);
     inputRef.current.value = "";
-  };
-
-  const deleteTodo = (id) => {
-    onDeleteTodo(id);
-  };
-
-  const toggledTodo = (id) => {
-    onEditTodo(id);
-    setTodoList(
-      todoList.map((todo) =>
-        todo.id === id ? { ...todo, done: !todo.done } : todo
-      )
-    );
-  };
-
-  const handleEditTodo = (id, content) => {
-    console.log(id);
-    onEditTodo({ id, content });
   };
 
   const handleKeyPress = (e) => {
@@ -52,11 +35,11 @@ const TodoList = ({
         <div className={styles.todoList}>
           {todoList.map((todo) => (
             <TodoItem
-              key={todo._id}
+              key={todo.id}
               todo={todo}
-              deleteTodo={deleteTodo}
-              toggledTodo={toggledTodo}
-              handleEditTodo={handleEditTodo}
+              onDeleteTodo={onDeleteTodo}
+              onEditTodo={onEditTodo}
+              onToggleTodo={onToggleTodo}
             />
           ))}
         </div>
