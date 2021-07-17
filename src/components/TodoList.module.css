@@ -1,0 +1,36 @@
+.todoContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.todoForm {
+  width: 20rem;
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 1rem;
+  box-shadow: 5px 5px 15px 2px rgba(0, 0, 0, 0.35);
+}
+
+.logoutButton {
+  width: 6rem;
+  margin-bottom: 1rem;
+}
+
+.todoList {
+  flex: 1;
+  overflow: auto;
+}
+
+.createTodoForm {
+  display: flex;
+}
+
+.createTodoForm > input {
+  flex: 1;
+}

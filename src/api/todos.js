@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getTodoList = async () => {
+export const getTodoList = async () => {
   const response = await axios({
     method: "get",
     url: "/api/todos",
@@ -8,7 +8,7 @@ const getTodoList = async () => {
   return response;
 };
 
-const getTodoById = async (id) => {
+export const getTodoById = async (id) => {
   const response = await axios({
     method: "get",
     url: `/api/todos/${id}`,
@@ -16,7 +16,7 @@ const getTodoById = async (id) => {
   return response;
 };
 
-const createTodo = async (content) => {
+export const createTodo = async (content) => {
   const response = await axios({
     method: "post",
     url: "/api/todos",
@@ -27,7 +27,7 @@ const createTodo = async (content) => {
   return response;
 };
 
-const deleteTodo = async (id) => {
+export const deleteTodo = async (id) => {
   const response = await axios({
     method: "delete",
     url: `/api/todos/${id}`,
@@ -35,7 +35,7 @@ const deleteTodo = async (id) => {
   return response;
 };
 
-const editTodo = async ({ id, content }) => {
+export const editTodo = async ({ id, content }) => {
   const response = await axios({
     method: "patch",
     url: `/api/todos/${id}`,

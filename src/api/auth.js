@@ -1,30 +1,30 @@
 import axios from "axios";
 
-const register = async ({ userId, password }) => {
+export const register = async ({ username, password }) => {
   const response = await axios({
     method: "post",
     url: "/api/auth/register",
     data: {
-      userId,
+      username,
       password,
     },
   });
   return response;
 };
 
-const login = async ({ userId, password }) => {
+export const login = async ({ username, password }) => {
   const response = await axios({
     method: "post",
     url: "/api/auth/login",
     data: {
-      userId,
+      username,
       password,
     },
   });
   return response;
 };
 
-const logout = async () => {
+export const logout = async () => {
   const response = await axios({
     method: "post",
     url: "/api/auth/logout",
@@ -32,7 +32,7 @@ const logout = async () => {
   return response;
 };
 
-const check = async () => {
+export const check = async () => {
   const response = await axios({
     method: "get",
     url: "/api/auth/check",
