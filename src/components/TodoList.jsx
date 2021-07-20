@@ -5,7 +5,6 @@ import TodoItem from "./TodoItem";
 
 const TodoList = ({
   todoList,
-  setTodoList,
   onCreateTodo,
   onDeleteTodo,
   onEditTodo,
