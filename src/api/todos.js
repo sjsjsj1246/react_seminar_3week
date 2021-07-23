@@ -5,7 +5,7 @@ export const getTodoList = async () => {
     method: "get",
     url: "/api/todos",
   });
-  return response;
+  return response.data;
 };
 
 export const getTodoById = async (id) => {
@@ -13,7 +13,7 @@ export const getTodoById = async (id) => {
     method: "get",
     url: `/api/todos/${id}`,
   });
-  return response;
+  return response.data;
 };
 
 export const createTodo = async (content) => {
@@ -24,7 +24,7 @@ export const createTodo = async (content) => {
       content,
     },
   });
-  return response;
+  return response.data;
 };
 
 export const deleteTodo = async (id) => {
@@ -32,7 +32,7 @@ export const deleteTodo = async (id) => {
     method: "delete",
     url: `/api/todos/${id}`,
   });
-  return response;
+  return response.data;
 };
 
 export const editTodo = async ({ id, content }) => {
@@ -43,7 +43,7 @@ export const editTodo = async ({ id, content }) => {
       content,
     },
   });
-  return response;
+  return response.data;
 };
 
 export const toggleTodo = async (id) => {
@@ -51,5 +51,5 @@ export const toggleTodo = async (id) => {
     method: "patch",
     url: `/api/todos/complete/${id}`,
   });
-  return response;
+  return response.data;
 };

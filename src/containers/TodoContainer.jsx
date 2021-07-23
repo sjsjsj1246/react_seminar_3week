@@ -1,66 +1,53 @@
 import React, { useEffect, useState } from "react";
+import TodoList from "../components/TodoList";
+import { useHistory } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createTodo,
   deleteTodo,
   editTodo,
   getTodoList,
   toggleTodo,
-} from "../api/todos";
-import { logout } from "../api/auth";
-import TodoList from "../components/TodoList";
-import { useHistory } from "react-router";
+} from "../modules/todos";
+import { logout } from "../modules/auth";
 
 const TodoContainer = (props) => {
-  const [todoList, setTodoList] = useState();
+  const { todoList, loading } = useSelector((state) => state.todos);
   const history = useHistory();
-
-  const onGetTodoList = () => {
-    getTodoList().then((response) => setTodoList(response.data));
-  };
+  const dispatch = useDispatch();
 
   const onCreateTodo = (content) => {
-    createTodo(content).then((response) => {
-      console.log(response);
-      onGetTodoList();
-    });
+    dispatch(createTodo(content));
   };
 
   const onDeleteTodo = (id) => {
-    deleteTodo(id).then((response) => {
-      console.log(response);
-      onGetTodoList();
-    });
+    dispatch(deleteTodo(id));
   };
 
   const onEditTodo = ({ id, content }) => {
-    editTodo({ id, content }).then((response) => {
-      console.log(response);
-      onGetTodoList();
-    });
+    dispatch(editTodo({ id, content }));
   };
 
   const onToggleTodo = (id) => {
-    toggleTodo(id).then((response) => {
-      console.log(response);
-      onGetTodoList();
-    });
+    dispatch(toggleTodo(id));
   };
 
   const onLogout = () => {
-    logout().then((data) => console.log(data));
+    dispatch(logout());
     history.push("/");
   };
 
   useEffect(() => {
-    onGetTodoList();
-  }, []);
+    if (!loading) {
+      dispatch(getTodoList());
+    }
+  }, [dispatch, loading]);
 
   if (!todoList) return "로딩중";
 
   return (
     <TodoList
       todoList={todoList}
-      setTodoList={setTodoList}
       onCreateTodo={onCreateTodo}
       onDeleteTodo={onDeleteTodo}
       onEditTodo={onEditTodo}

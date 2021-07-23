@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Login from "../components/Login";
-import { login } from "../api/auth";
 import { useHistory } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../modules/auth";
 
 const LoginContainer = (props) => {
-  const history = useHistory();
+  const { loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const onLogin = ({ username, password }) => {
-    login({ username, password }).then((response) => {
-      console.log(response.data);
-      history.push("/todo");
-    });
+    dispatch(login({ username, password }));
   };
+
+  const history = useHistory();
+  useEffect(() => {
+    if (loading === false) {
+      history.push("/todo");
+    }
+  }, [loading]);
+
   return <Login onLogin={onLogin} />;
 };
 

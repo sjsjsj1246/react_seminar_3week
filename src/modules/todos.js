@@ -20,6 +20,8 @@ const TOGGLE_TODO = "TOGGLE_TODO";
 const TOGGLE_TODO_SUCCESS = "TOGGLE_TODO_SUCCESS";
 const TOGGLE_TODO_ERROR = "TOGGLE_TODO_ERROR";
 
+const SET_LOADING = "SET_LOADING";
+
 export const getTodoList = () => async (dispatch) => {
   dispatch({ type: GET_TODO_LIST });
   try {
@@ -31,45 +33,54 @@ export const getTodoList = () => async (dispatch) => {
 };
 export const createTodo = (content) => async (dispatch) => {
   dispatch({ type: CREATE_TODO });
+  dispatch({ type: SET_LOADING, loading: true });
   try {
     await todoAPI.createTodo(content);
     dispatch({ type: CREATE_TODO_SUCCESS });
   } catch (e) {
     dispatch({ type: CREATE_TODO_ERROR, error: e });
   }
+  dispatch({ type: SET_LOADING, loading: false });
 };
 export const deleteTodo = (id) => async (dispatch) => {
   dispatch({ type: DELETE_TODO });
+  dispatch({ type: SET_LOADING, loading: true });
   try {
     await todoAPI.deleteTodo(id);
     dispatch({ type: DELETE_TODO_SUCCESS });
   } catch (e) {
     dispatch({ type: DELETE_TODO_ERROR, error: e });
   }
+  dispatch({ type: SET_LOADING, loading: false });
 };
 export const editTodo =
   ({ id, content }) =>
   async (dispatch) => {
     dispatch({ type: EDIT_TODO });
+    dispatch({ type: SET_LOADING, loading: true });
     try {
       await todoAPI.editTodo({ id, content });
       dispatch({ type: EDIT_TODO_SUCCESS });
     } catch (e) {
       dispatch({ type: EDIT_TODO_ERROR, error: e });
     }
+    dispatch({ type: SET_LOADING, loading: false });
   };
 export const toggleTodo = (id) => async (dispatch) => {
   dispatch({ type: TOGGLE_TODO });
+  dispatch({ type: SET_LOADING, loading: true });
   try {
     await todoAPI.toggleTodo(id);
     dispatch({ type: TOGGLE_TODO_SUCCESS });
   } catch (e) {
     dispatch({ type: TOGGLE_TODO_ERROR, error: e });
   }
+  dispatch({ type: SET_LOADING, loading: false });
 };
 
 const initialState = {
   todoList: null,
+  loading: null,
   error: null,
 };
 
@@ -104,6 +115,11 @@ export default function todos(state = initialState, action) {
       return {
         ...state,
         error: action.error,
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: action.loading,
       };
     default:
       return state;
