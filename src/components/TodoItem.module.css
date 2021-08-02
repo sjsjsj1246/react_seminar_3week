@@ -22,7 +22,7 @@
   cursor: pointer;
 }
 
-.done {
+.isCompleted {
   color: gray;
   text-decoration: line-through;
 }

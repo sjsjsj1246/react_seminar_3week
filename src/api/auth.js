@@ -9,7 +9,7 @@ export const register = async ({ username, password }) => {
       password,
     },
   });
-  return response.data;
+  return response;
 };
 
 export const login = async ({ username, password }) => {
@@ -21,7 +21,7 @@ export const login = async ({ username, password }) => {
       password,
     },
   });
-  return response.data;
+  return response;
 };
 
 export const logout = async () => {
@@ -29,7 +29,7 @@ export const logout = async () => {
     method: "post",
     url: "/api/auth/logout",
   });
-  return response.data;
+  return response;
 };
 
 export const check = async () => {
@@ -37,5 +37,5 @@ export const check = async () => {
     method: "get",
     url: "/api/auth/check",
   });
-  return response.data;
+  return response;
 };

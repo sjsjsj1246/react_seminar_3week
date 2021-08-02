@@ -1,87 +1,93 @@
 import * as authAPI from "../api/auth";
 
-const LOGIN = "LOGIN";
-const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-const LOGIN_ERROR = "LOGIN_ERROR";
+const LOGIN = "auth/LOGIN";
+const LOGIN_SUCCESS = "auth/LOGIN_SUCCESS";
+const LOGIN_FAILURE = "auth/LOGIN_FAILURE";
 
-const REGISTER = "REGISTER";
-const REGISTER_SUCCESS = "REGISTER_SUCCESS";
-const REGISTER_ERROR = "REGISTER_ERROR";
+const LOGOUT = "auth/LOGOUT";
+const LOGOUT_SUCCESS = "auth/LOGOUT_SUCCESS";
+const LOGOUT_FAILURE = "auth/LOGOUT_FAILURE";
 
-const LOGOUT = "LOGOUT";
-const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
-const LOGOUT_ERROR = "LOGOUT_ERROR";
-
-const SET_LOADING = "SET_LOADING";
+const REGISTER = "auth/REGISTER";
+const REGISTER_SUCCESS = "auth/REGISTER_SUCCESS";
+const REGISTER_FAILURE = "auth/REGISTER_FAILURE";
 
 export const login =
   ({ username, password }) =>
   async (dispatch) => {
     dispatch({ type: LOGIN });
-    dispatch({ type: SET_LOADING, loading: true });
     try {
-      await authAPI.login({ username, password });
-      dispatch({ type: LOGIN_SUCCESS });
+      const response = await authAPI.login({ username, password });
+      dispatch({ type: LOGIN_SUCCESS, payload: response.data });
     } catch (e) {
-      dispatch({ type: LOGIN_ERROR, error: e });
+      dispatch({ type: LOGIN_FAILURE, payload: e });
     }
-    dispatch({ type: SET_LOADING, loading: false });
   };
+
+export const logout = () => async (dispatch) => {
+  dispatch({ type: LOGOUT });
+  try {
+    const response = await authAPI.logout();
+    dispatch({ type: LOGOUT_SUCCESS, payload: "로그아웃 성공" });
+  } catch (e) {
+    dispatch({ type: LOGOUT_FAILURE, payload: e });
+  }
+};
 
 export const register =
   ({ username, password }) =>
   async (dispatch) => {
     dispatch({ type: REGISTER });
-    dispatch({ type: SET_LOADING, loading: true });
     try {
-      await authAPI.register({ username, password });
-      dispatch({ type: REGISTER_SUCCESS });
+      const response = await authAPI.register({ username, password });
+      dispatch({ type: REGISTER_SUCCESS, payload: response.data });
     } catch (e) {
-      dispatch({ type: REGISTER_ERROR, error: e });
+      dispatch({ type: REGISTER_FAILURE, payload: e });
     }
-    dispatch({ type: SET_LOADING, loading: false });
   };
 
-export const logout = () => async (dispatch) => {
-  dispatch({ type: LOGOUT });
-  dispatch({ type: SET_LOADING, loading: true });
-  try {
-    await authAPI.logout();
-    dispatch({ type: LOGOUT_SUCCESS });
-  } catch (e) {
-    dispatch({ type: LOGOUT_ERROR, error: e });
-  }
-  dispatch({ type: SET_LOADING, loading: false });
-};
-
-const initialState = {
-  loading: null,
+const initState = {
+  auth: null,
   error: null,
+  loading: null,
+  success: null,
 };
 
-export default function auth(state = initialState, action) {
+const auth = (state = initState, action) => {
   switch (action.type) {
-    case LOGIN_ERROR:
+    case LOGIN_SUCCESS:
       return {
         ...state,
-        authError: action.error,
+        auth: action.payload,
       };
-    case REGISTER_ERROR:
+    case LOGIN_FAILURE:
       return {
         ...state,
-        authError: action.error,
+        error: action.payload,
       };
-    case LOGOUT_ERROR:
+    case LOGOUT_SUCCESS:
       return {
         ...state,
-        authError: action.error,
+        auth: action.payload,
       };
-    case SET_LOADING:
+    case LOGOUT_FAILURE:
       return {
         ...state,
-        loading: action.loading,
+        error: action.payload,
+      };
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        auth: action.payload,
+      };
+    case REGISTER_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
       };
     default:
       return state;
   }
-}
+};
+
+export default auth;

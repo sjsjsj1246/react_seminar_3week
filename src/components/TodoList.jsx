@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./TodoList.module.css";
 import { useHistory } from "react-router-dom";
 import TodoItem from "./TodoItem";
@@ -12,11 +12,25 @@ const TodoList = ({
   onLogout,
 }) => {
   const inputRef = useRef();
+  const history = useHistory();
 
   const createTodo = (content) => {
     if (content === "") return;
     onCreateTodo(content);
     inputRef.current.value = "";
+  };
+
+  const deleteTodo = (id) => {
+    onDeleteTodo(id);
+  };
+
+  const toggledTodo = (id) => {
+    onToggleTodo(id);
+  };
+
+  const editTodo = (id, content) => {
+    if (content === "") return;
+    onEditTodo({ id, content });
   };
 
   const handleKeyPress = (e) => {
@@ -36,9 +50,9 @@ const TodoList = ({
             <TodoItem
               key={todo.id}
               todo={todo}
-              onDeleteTodo={onDeleteTodo}
-              onEditTodo={onEditTodo}
-              onToggleTodo={onToggleTodo}
+              deleteTodo={deleteTodo}
+              toggledTodo={toggledTodo}
+              editTodo={editTodo}
             />
           ))}
         </div>

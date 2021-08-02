@@ -1,125 +1,129 @@
-import * as todoAPI from "../api/todos";
+import * as todosAPI from "../api/todos";
 
-const GET_TODO_LIST = "GET_TODO_LIST";
-const GET_TODO_LIST_SUCCESS = "GET_TODO_LIST_SUCCESS";
-const GET_TODO_LIST_ERROR = "GET_TODO_LIST_ERROR";
+const GET_TODO_LIST = "todos/GET_TODO_LIST";
+const GET_TODO_LIST_SUCCESS = "todos/GET_TODO_LIST_SUCCESS";
+const GET_TODO_LIST_FAILURE = "todos/GET_TODO_LIST_FAILURE";
 
-const CREATE_TODO = "CREATE_TODO";
-const CREATE_TODO_SUCCESS = "CREATE_TODO_SUCCESS";
-const CREATE_TODO_ERROR = "CREATE_TODO_ERROR";
+const CREATE_TODO = "todos/CREATE_TODO";
+const CREATE_TODO_SUCCESS = "todos/CREATE_TODO_SUCCESS";
+const CREATE_TODO_FAILURE = "todos/CREATE_TODO_FAILURE";
 
-const DELETE_TODO = "DELETE_TODO";
-const DELETE_TODO_SUCCESS = "DELETE_TODO_SUCCESS";
-const DELETE_TODO_ERROR = "DELETE_TODO_ERROR";
+const DELETE_TODO = "todos/DELETE_TODO";
+const DELETE_TODO_SUCCESS = "todos/DELETE_TODO_SUCCESS";
+const DELETE_TODO_FAILURE = "todos/DELETE_TODO_FAILURE";
 
-const EDIT_TODO = "EDIT_TODO";
-const EDIT_TODO_SUCCESS = "EDIT_TODO_SUCCESS";
-const EDIT_TODO_ERROR = "EDIT_TODO_ERROR";
+const EDIT_TODO = "todos/EDIT_TODO";
+const EDIT_TODO_SUCCESS = "todos/EDIT_TODO_SUCCESS";
+const EDIT_TODO_FAILURE = "todos/EDIT_TODO_FAILURE";
 
-const TOGGLE_TODO = "TOGGLE_TODO";
-const TOGGLE_TODO_SUCCESS = "TOGGLE_TODO_SUCCESS";
-const TOGGLE_TODO_ERROR = "TOGGLE_TODO_ERROR";
+const TOGGLE_TODO = "todos/TOGGLE_TODO";
+const TOGGLE_TODO_SUCCESS = "todos/TOGGLE_TODO_SUCCESS";
+const TOGGLE_TODO_FAILURE = "todos/TOGGLE_TODO_FAILURE";
 
-const SET_LOADING = "SET_LOADING";
+const SET_LOADING = "todos/SET_LOADING";
 
 export const getTodoList = () => async (dispatch) => {
   dispatch({ type: GET_TODO_LIST });
   try {
-    const todoList = await todoAPI.getTodoList();
-    dispatch({ type: GET_TODO_LIST_SUCCESS, todoList });
+    const response = await todosAPI.getTodoList();
+    dispatch({ type: GET_TODO_LIST_SUCCESS, payload: response.data });
   } catch (e) {
-    dispatch({ type: GET_TODO_LIST_ERROR, error: e });
+    dispatch({ type: GET_TODO_LIST_FAILURE, payload: e });
   }
 };
+
 export const createTodo = (content) => async (dispatch) => {
   dispatch({ type: CREATE_TODO });
-  dispatch({ type: SET_LOADING, loading: true });
+  dispatch({ type: SET_LOADING, payload: true });
   try {
-    await todoAPI.createTodo(content);
-    dispatch({ type: CREATE_TODO_SUCCESS });
+    const response = await todosAPI.createTodo(content);
+    dispatch({ type: CREATE_TODO_SUCCESS, payload: response.data });
   } catch (e) {
-    dispatch({ type: CREATE_TODO_ERROR, error: e });
+    dispatch({ type: CREATE_TODO_FAILURE, payload: e });
   }
-  dispatch({ type: SET_LOADING, loading: false });
+  dispatch({ type: SET_LOADING, payload: false });
 };
+
 export const deleteTodo = (id) => async (dispatch) => {
   dispatch({ type: DELETE_TODO });
-  dispatch({ type: SET_LOADING, loading: true });
+  dispatch({ type: SET_LOADING, payload: true });
   try {
-    await todoAPI.deleteTodo(id);
-    dispatch({ type: DELETE_TODO_SUCCESS });
+    const response = await todosAPI.deleteTodo(id);
+    dispatch({ type: DELETE_TODO_SUCCESS, payload: response.data });
   } catch (e) {
-    dispatch({ type: DELETE_TODO_ERROR, error: e });
+    dispatch({ type: DELETE_TODO_FAILURE, payload: e });
   }
-  dispatch({ type: SET_LOADING, loading: false });
+  dispatch({ type: SET_LOADING, payload: false });
 };
+
 export const editTodo =
   ({ id, content }) =>
   async (dispatch) => {
     dispatch({ type: EDIT_TODO });
-    dispatch({ type: SET_LOADING, loading: true });
+    dispatch({ type: SET_LOADING, payload: true });
     try {
-      await todoAPI.editTodo({ id, content });
-      dispatch({ type: EDIT_TODO_SUCCESS });
+      const response = await todosAPI.editTodo({ id, content });
+      dispatch({ type: EDIT_TODO_SUCCESS, payload: response.data });
     } catch (e) {
-      dispatch({ type: EDIT_TODO_ERROR, error: e });
+      dispatch({ type: EDIT_TODO_FAILURE, payload: e });
     }
-    dispatch({ type: SET_LOADING, loading: false });
+    dispatch({ type: SET_LOADING, payload: false });
   };
+
 export const toggleTodo = (id) => async (dispatch) => {
   dispatch({ type: TOGGLE_TODO });
-  dispatch({ type: SET_LOADING, loading: true });
+  dispatch({ type: SET_LOADING, payload: true });
   try {
-    await todoAPI.toggleTodo(id);
-    dispatch({ type: TOGGLE_TODO_SUCCESS });
+    const response = await todosAPI.toggleTodo(id);
+    dispatch({ type: TOGGLE_TODO_SUCCESS, payload: response.data });
   } catch (e) {
-    dispatch({ type: TOGGLE_TODO_ERROR, error: e });
+    dispatch({ type: TOGGLE_TODO_FAILURE, payload: e });
   }
-  dispatch({ type: SET_LOADING, loading: false });
+  dispatch({ type: SET_LOADING, payload: false });
 };
 
-const initialState = {
-  todoList: null,
-  loading: null,
+const initState = {
+  todoList: [],
   error: null,
+  loading: false,
 };
 
-export default function todos(state = initialState, action) {
+export default function todos(state = initState, action) {
   switch (action.type) {
     case GET_TODO_LIST_SUCCESS:
       return {
         ...state,
-        todoList: action.todoList,
+        todoList: action.payload,
       };
-    case GET_TODO_LIST_ERROR:
+    case GET_TODO_LIST_FAILURE:
       return {
         ...state,
-        error: action.error,
+        error: action.payload,
       };
-    case CREATE_TODO_ERROR:
+    case CREATE_TODO_FAILURE:
       return {
         ...state,
-        error: action.error,
+        error: action.payload,
       };
-    case DELETE_TODO_ERROR:
+    case DELETE_TODO_FAILURE:
       return {
         ...state,
-        error: action.error,
+        error: action.payload,
       };
-    case EDIT_TODO_ERROR:
+    case EDIT_TODO_FAILURE:
       return {
         ...state,
-        error: action.error,
+        error: action.payload,
       };
-    case TOGGLE_TODO_ERROR:
+    case TOGGLE_TODO_FAILURE:
       return {
         ...state,
-        error: action.error,
+        error: action.payload,
       };
     case SET_LOADING:
       return {
         ...state,
-        loading: action.loading,
+        loading: action.payload,
       };
     default:
       return state;

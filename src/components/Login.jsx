@@ -2,14 +2,21 @@ import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Login.module.css";
 
-const Login = ({ onLogin }) => {
-  const id = useRef();
+const Login = ({ onLogin, errorMessage }) => {
+  const username = useRef();
   const password = useRef();
+
   const handleLogin = () => {
     onLogin({
-      username: id.current.value,
+      username: username.current.value,
       password: password.current.value,
     });
+  };
+
+  const onKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
   };
 
   return (
@@ -17,11 +24,16 @@ const Login = ({ onLogin }) => {
       <div className={styles.loginForm}>
         <div className={styles.field}>
           <p>ID</p>
-          <input className={styles.input} ref={id} type="text" />
+          <input className={styles.input} ref={username} type="text" />
         </div>
         <div className={styles.field}>
           <p>PASSWORD</p>
-          <input className={styles.input} ref={password} type="password" />
+          <input
+            className={styles.input}
+            ref={password}
+            onKeyPress={onKeyPress}
+            type="password"
+          />
         </div>
         <Link to="/register" className={styles.signupButton}>
           회원가입
@@ -29,6 +41,7 @@ const Login = ({ onLogin }) => {
         <button className={styles.button} onClick={handleLogin}>
           로그인
         </button>
+        <p>{errorMessage}</p>
       </div>
     </div>
   );

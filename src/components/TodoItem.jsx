@@ -1,40 +1,25 @@
-import React, { useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import styles from "./TodoItem.module.css";
 import { BsTrash, BsCheck, BsPencil } from "react-icons/bs";
 import { FiSave } from "react-icons/fi";
 
-const TodoItem = ({ todo, onDeleteTodo, onEditTodo, onToggleTodo }) => {
+const TodoItem = ({ todo, deleteTodo, toggledTodo, editTodo }) => {
   const [edit, setEdit] = useState(false);
   const inputRef = useRef();
 
-  const handleEditTodo = () => {
+  const onEditTodo = () => {
     if (inputRef.current.value === "") return;
-    onEditTodo({
-      id: todo.id,
-      content: inputRef.current.value,
-    });
+    editTodo(todo.id, inputRef.current.value);
   };
-
-  const handleDeleteTodo = (e) => {
-    e.stopPropagation();
-    onDeleteTodo(todo.id);
-  };
-
-  const handleToggleTodo = (e) => {
-    e.stopPropagation();
-    onToggleTodo(todo.id);
-  };
-
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      handleEditTodo();
+      onEditTodo();
       setEdit(false);
     }
   };
-
   document.body.onclick = () => {
     if (edit) {
-      handleEditTodo();
+      onEditTodo();
       setEdit(false);
     }
   };
@@ -42,10 +27,16 @@ const TodoItem = ({ todo, onDeleteTodo, onEditTodo, onToggleTodo }) => {
   return (
     <div
       className={`${styles.todoItemContainer} ${
-        todo.isCompleted && styles.done
+        todo.isCompleted && styles.isCompleted
       }`}
     >
-      <div className={styles.todoCheckbox} onClick={handleToggleTodo}>
+      <div
+        className={styles.todoCheckbox}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggledTodo(todo.id);
+        }}
+      >
         {todo.isCompleted && <BsCheck color="#FA2060" />}
       </div>
       {edit ? (
@@ -61,7 +52,7 @@ const TodoItem = ({ todo, onDeleteTodo, onEditTodo, onToggleTodo }) => {
             onClick={(e) => {
               e.stopPropagation();
               setEdit(false);
-              handleEditTodo();
+              onEditTodo();
             }}
           />
         </>
@@ -69,9 +60,12 @@ const TodoItem = ({ todo, onDeleteTodo, onEditTodo, onToggleTodo }) => {
         <>
           <p
             className={`${styles.description} ${
-              todo.isCompleted && styles.done
+              todo.isCompleted && styles.isCompleted
             }`}
-            onClick={handleToggleTodo}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggledTodo(todo.id);
+            }}
           >
             {todo.content}
           </p>
@@ -85,9 +79,15 @@ const TodoItem = ({ todo, onDeleteTodo, onEditTodo, onToggleTodo }) => {
         </>
       )}
 
-      <BsTrash className={styles.deleteButton} onClick={handleDeleteTodo} />
+      <BsTrash
+        className={styles.deleteButton}
+        onClick={(e) => {
+          e.stopPropagation();
+          deleteTodo(todo.id);
+        }}
+      />
     </div>
   );
 };
 
-export default TodoItem;
+export default memo(TodoItem);
